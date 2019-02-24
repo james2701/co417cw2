@@ -27,9 +27,12 @@ def cut(x, yoffset, xoffset, depth):
             cut(x[:,mw:], yoffset, xoffset+mw, depth+1)
     else:
         r = np.mean(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 0]) 
+        g = np.mean(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 1]) 
+        b = np.mean(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 2]) 
         opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], :] = 0
         opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 0] = r
-        opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 2] = 1
+        opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 1] = g
+        opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 2] = b
 def g(x, gamma):
     x = x**(1/gamma)
     x[x>1] = 1.0
