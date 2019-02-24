@@ -28,3 +28,8 @@ data = loadPFM('simple_sphere_32.pfm')
 I = g(data, gamma)*255.0
 I = I.astype(np.uint8)
 writePPM('simple_sphere_32.ppm', I)
+
+data = loadPFM('simple_sphere_3232.pfm')
+I = g(data, gamma)*255.0
+I = I.astype(np.uint8)
+writePPM('simple_sphere_3232.ppm', I)
