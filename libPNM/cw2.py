@@ -3,27 +3,33 @@ from PNM import *
 
 #set gamma here
 gamma = 2.2
+n = 0
+
 
 def half(x):
     s = np.cumsum(x)
     for i in range(s.shape[0]):
         if s[i]>np.sum(x)/2.0:
             return i
-def cut(x, yoffset, xoffset, depth, opt):
+def cut(x, yoffset, xoffset, depth):
+    global n
+    global opt
+    w = np.sum(x, axis = 0)
+    h = np.sum(x, axis = 1)
+    mw = half(w)
+    mh = half(h)
     if x.shape[0]>x.shape[1]:
-        s = np.sum(x, axis = 1)
-        middle = half(s)        
-        opt[yoffset+middle,xoffset:xoffset+s.shape[0]]=1
-        if depth != 0:
-            cut(x[:middle,:], yoffset, xoffset, depth-1, opt)
-            cut(x[middle:,:], yoffset+middle, xoffset, depth-1, opt)
+        opt[yoffset+mh-1:yoffset+mh+1,xoffset:xoffset+x.shape[1]]=1
+        n = n + 1
+        if depth < 5:
+            cut(x[:mh,:], yoffset, xoffset, depth+1)
+            cut(x[mh:,:], yoffset+mh, xoffset, depth+1)
     else:
-        s = np.sum(x, axis = 0)
-        middle = half(s)
-        opt[yoffset:yoffset+s.shape[0],xoffset+middle]=1
-        if depth != 0:
-            cut(x[:,:middle], yoffset, xoffset, depth-1, opt)
-            cut(x[:,middle:], yoffset, xoffset+middle, depth-1, opt)
+        opt[yoffset:yoffset+x.shape[0],xoffset+mw-1:xoffset+mw+1]=1
+        n = n + 1
+        if depth < 5:
+            cut(x[:,:mw], yoffset, xoffset, depth+1)
+            cut(x[:,mw:], yoffset, xoffset+mw, depth+1)
 
 
 #load data
@@ -32,7 +38,7 @@ opt = data
 data = np.mean(data, axis = 2)
 scale = np.zeros(data.shape)
 for i in range(512):
-   scale[i,:] = np.sin(i/511.0*np.pi)
+    scale[i,:] = np.sin(i/511.0*np.pi)
 data = data * scale
-cut(data, 0, 0, 1, opt)
-writePFM('./opt.pfm', opt)
+cut(data, 0, 0, 0)
+writePFM('./opt22.pfm', opt)
