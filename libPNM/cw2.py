@@ -27,8 +27,9 @@ def cut(x, yoffset, xoffset, depth):
             opt[yoffset:yoffset+x.shape[0],xoffset+mw-1:xoffset+mw+1]=1
             cut(x[:,:mw], yoffset, xoffset, depth+1)
             cut(x[:,mw:], yoffset, xoffset+mw, depth+1)
-
-
+    else:
+        opt[yoffset+mh-2:yoffset+mh+2, xoffset+mw-2:xoffset+mw+2, :2] = 0
+        opt[yoffset+mh-2:yoffset+mh+2, xoffset+mw-2:xoffset+mw+2, 2] = 1
 #load data
 data = loadPFM('grace_latlong.pfm')
 opt = data
