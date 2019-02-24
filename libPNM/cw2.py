@@ -30,6 +30,10 @@ def cut(x, yoffset, xoffset, depth):
     else:
         opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, :2] = 0
         opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 2] = 1
+def g(x, gamma):
+    x = x**(1/gamma)
+    x[x>1] = 1.0
+    return x
 #load data
 data = loadPFM('grace_latlong.pfm')
 opt = data
@@ -39,4 +43,7 @@ for i in range(512):
     scale[i,:] = np.sin(i/511.0*np.pi)
 data = data * scale
 cut(data, 0, 0, 0)
+I = g(opt, gamma)*255.0
+I = I.astype(np.uint8)
 writePFM('./opt1.pfm', opt)
+writePPM('./opt1.ppm', I)
