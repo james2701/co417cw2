@@ -18,7 +18,7 @@ def cut(x, yoffset, xoffset, depth):
     h = np.sum(x, axis = 1)
     mw = half(w)
     mh = half(h)
-    if depth < 6:
+    if depth < 1:
         if x.shape[0]>x.shape[1]:
             opt[yoffset+mh-1:yoffset+mh+1,xoffset:xoffset+x.shape[1]]=1
             cut(x[:mh,:], yoffset, xoffset, depth+1)
@@ -39,4 +39,4 @@ for i in range(512):
     scale[i,:] = np.sin(i/511.0*np.pi)
 data = data * scale
 cut(data, 0, 0, 0)
-writePFM('./opt22.pfm', opt)
+writePFM('./opt1.pfm', opt)
