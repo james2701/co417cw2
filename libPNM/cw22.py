@@ -26,9 +26,13 @@ def cut(x, yoffset, xoffset, depth):
             cut(x[:,:mw], yoffset, xoffset, depth+1)
             cut(x[:,mw:], yoffset, xoffset+mw, depth+1)
     else:
-        r = max(np.sum(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 0]),1) 
-        g = max(np.sum(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 1]),1) 
-        b = max(np.sum(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 2]),1) 
+        r = np.sum(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 0]) 
+        g = np.sum(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 1]) 
+        b = np.sum(opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], 2])
+        rgb = r + g + b
+        r = r/rgb
+        g = r/rgb
+        b = r/rgb
         opt[yoffset:yoffset+x.shape[0], xoffset:xoffset+x.shape[1], :] = 0
         opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 0] = r
         opt[yoffset+mh-3:yoffset+mh+3, xoffset+mw-3:xoffset+mw+3, 1] = g
