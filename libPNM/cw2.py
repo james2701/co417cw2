@@ -18,16 +18,13 @@ def cut(x, yoffset, xoffset, depth):
     h = np.sum(x, axis = 1)
     mw = half(w)
     mh = half(h)
-    if x.shape[0]>x.shape[1]:
-        opt[yoffset+mh-1:yoffset+mh+1,xoffset:xoffset+x.shape[1]]=1
-        n = n + 1
-        if depth < 5:
+    if depth < 6:
+        if x.shape[0]>x.shape[1]:
+            opt[yoffset+mh-1:yoffset+mh+1,xoffset:xoffset+x.shape[1]]=1
             cut(x[:mh,:], yoffset, xoffset, depth+1)
             cut(x[mh:,:], yoffset+mh, xoffset, depth+1)
-    else:
-        opt[yoffset:yoffset+x.shape[0],xoffset+mw-1:xoffset+mw+1]=1
-        n = n + 1
-        if depth < 5:
+        else:
+            opt[yoffset:yoffset+x.shape[0],xoffset+mw-1:xoffset+mw+1]=1
             cut(x[:,:mw], yoffset, xoffset, depth+1)
             cut(x[:,mw:], yoffset, xoffset+mw, depth+1)
 
